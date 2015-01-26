@@ -1,0 +1,4 @@
+# 忽略pycache目录里的所有文件
+/mysite/__pycache__/
+/polls/__pycache__/
+/polls/migrations/__pycache__/
