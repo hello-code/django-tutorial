@@ -1,38 +1,45 @@
-from django.http import HttpResponse
-from django.template import RequestContext,loader
+# coding: utf-8
+
 from polls.models import Question,Choice
 from django.shortcuts import render,get_object_or_404
-from django.http import Http404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.views import generic
 
-def index(request):
-    # qlist=Question.objects.all()
-    # #qlist=Question.objects.order_by('-pub_date')[:5]
-    # #output=','.join([p.question_text for p in qlist])
-    # # use tmplate
-    # template=loader.get_template('polls/index.html')
-    # context=RequestContext(request,{'qlist':qlist})
-    # return HttpResponse(template.render(context))
-    # #return HttpResponse('hello...:'+output)
+class IndexView(generic.ListView):
+    '''template_name:视图模板名称;
+    context_object_name：准备要显示的数据;
+    get_queryset：给上下文(context_object_name)提供数据
+    这些都是django内置的'''
 
-    qlist=Question.objects.all()
-    context={'qlist':qlist}
-    return render(request,'polls/index.html',context)
+    template_name='polls/index.html'
+    context_object_name='qlist'
 
-def detail(request,question_id):
-    # try:
-    #     q=Question.objects.get(pk=question_id)
-    # except Question.DoesNotExist:
-    #     raise Http404('question_id does not exist')
-    # return render(request,'polls/detail.html',{'question':q})
+    def get_queryset(self):
+        '''Rerurn the last five published questions.'''
+        return Question.objects.order_by('-pub_date')[:5]
 
-    q=get_object_or_404(Question,pk=question_id)
-    return render(request,'polls/detail.html',{'question':q})
+class DetailView(generic.DetailView):
+    '''显示明细 model也是django内置的属性-模型'''
+    model=Question
+    template_name='polls/detail.html'
 
-def results(request,question_id):
-    question=get_object_or_404(Question,pk=question_id)
-    return render(request,'polls/results.html',{'question':question})
+class ResultsView(generic.DetailView):
+    model=Question
+    template_name='polls/results.html'
+
+# def index(request):
+#     qlist=Question.objects.all()
+#     context={'qlist':qlist}
+#     return render(request,'polls/index.html',context)
+
+# def detail(request,question_id):
+#     q=get_object_or_404(Question,pk=question_id)
+#     return render(request,'polls/detail.html',{'question':q})
+
+# def results(request,question_id):
+#     question=get_object_or_404(Question,pk=question_id)
+#     return render(request,'polls/results.html',{'question':question})
 
 def vote(request,question_id):
     p=get_object_or_404(Question,pk=question_id)
