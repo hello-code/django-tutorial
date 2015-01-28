@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from django.db import models
 
 # Create your models here.
@@ -13,11 +15,15 @@ class Question(models.Model):
         return self.question_text
 
     def was_published_recently(self):
-        return self.pub_date>=timezone.now()-datetime.timedelta(days=1)
+        now=timezone.now()
+        # 天数-几天才算“最近”
+        days=datetime.timedelta(days=1) # 1天=昨天
+        return now-days<=self.pub_date<=now
+        #return self.pub_date<=now>=now-days 这句语法不对！？测试不通过。
 
     was_published_recently.admin_order_field='pub_date'
     was_published_recently.boolean=True
-    was_published_recently.short_description='ppppppppppppppppp'
+    was_published_recently.short_description='Recent Publised'
 
 class Choice(models.Model):
     question=models.ForeignKey(Question)
