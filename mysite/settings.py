@@ -69,6 +69,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'zh-cn'
 
+#TIME_ZONE = 'UTC'
 TIME_ZONE = 'Asia/Chongqing'
 
 USE_I18N = True

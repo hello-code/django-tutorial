@@ -5,6 +5,7 @@ from django.shortcuts import render,get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views import generic
+from django.utils import timezone
 
 class IndexView(generic.ListView):
     '''template_name:视图模板名称;
@@ -16,13 +17,21 @@ class IndexView(generic.ListView):
     context_object_name='qlist'
 
     def get_queryset(self):
-        '''Rerurn the last five published questions.'''
-        return Question.objects.order_by('-pub_date')[:5]
+        '''Rerurn the last five published questions.
+        不包含时间在未来的'''
+        #return Question.objects.order_by('-pub_date')[:5]
+        return Question.objects.filter(
+            pub_date__lte=timezone.now()
+        ).order_by('-pub_date')[:5]
 
 class DetailView(generic.DetailView):
     '''显示明细 model也是django内置的属性-模型'''
     model=Question
     template_name='polls/detail.html'
+
+    def get_queryset(self):
+        '''Excludes any questions than are not published yet'''
+        return Question.objects.filter(pub_date__lte=timezone.now())
 
 class ResultsView(generic.DetailView):
     model=Question
