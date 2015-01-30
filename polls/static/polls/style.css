@@ -1,3 +1,7 @@
 li a{
   color:green;
 }
+
+body{/*结尾一定要有分号!! */
+  background:white url("images/background.gif") no-repeat right;)
+}
