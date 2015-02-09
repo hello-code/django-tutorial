@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views import generic
 from django.utils import timezone
-import os
+
 class IndexView(generic.ListView):
     '''template_name:视图模板名称;
     context_object_name：准备要显示的数据;
