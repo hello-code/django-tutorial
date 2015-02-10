@@ -1,3 +1,5 @@
+# coding: utf-8
+
 """
 Django settings for mysite project.
 
@@ -83,5 +85,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
-
+# 复制系统的admin样式及js文件时需要设置static root.复制完后注释掉才能使用staticfiles_dirs里的样式！
+#STATIC_ROOT=os.path.join(BASE_DIR,'static')
+STATICFILES_DIRS=[
+    '/home/z/work/py3env/mysite/static/'
+]
 TEMPLATE_DIRS=[os.path.join(BASE_DIR,'templates')]
